@@ -8,5 +8,19 @@
         <p>
             This is a very minimalistic web project: a static site.
         </p>
+        <h2>Azure CLI deployment</h2>
+        <p>
+            To configure deployment of this site to Azure App Service as a web app
+            (assuming a resource group and a service plan exist):
+        </p>
+        <pre>
+            az webapp create --name MinimumMinimorum --plan "/subscriptions/0efe8e0b-fdce-4064-a660-008339591626/resourceGroups/SwallowTheDictionary-rg/providers/Microsoft.Web/serverfarms/SwallowTheDictionary-plan" --resource-group "SwallowTheDictionary-rg" --deployment-source-url https://github.com/vasily-blinkov/minimum-minimorum
+        </pre>
+        <p>
+            And now, change the content, push changes to GIT and publish them:
+        </p>
+        <pre>
+            TODO
+        </pre>
     </body>
 </html>
