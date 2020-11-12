@@ -1,0 +1,1 @@
+This is the simplest example of a static web site to be deployed to Azure App Service.
