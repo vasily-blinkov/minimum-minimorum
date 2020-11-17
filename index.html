@@ -9,6 +9,9 @@
             .code {
                 font-family: monospace;
             }
+            .variable {
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body>
@@ -45,5 +48,10 @@
             This variant will be useful if you need to perform build operations and publish consequent artifacts from your local machine.
             TODO
         </p>
+        <h2>Cleaning up</h2>
+        <p>
+            Use the next command to delete the web app created with a script from above.
+        </p>
+        <pre>az webapp delete --name <span class="variable">MinimumMinimorum</span> --resource-group <span class="variable">SwallowTheDictionary-rg</span></pre>
     </body>
 </html>
