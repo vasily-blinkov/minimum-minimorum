@@ -2,25 +2,48 @@
 <html>
     <head>
         <title>Minimum minimorum</title>
+        <style>
+            pre {
+                overflow-x: auto;
+            }
+            .code {
+                font-family: monospace;
+            }
+        </style>
     </head>
     <body>
         <h1>Hello, world!</h1>
         <p>
             This is a very minimalistic web project: a static site.
         </p>
-        <h2>Azure CLI deployment</h2>
+        <h2>Azure CLI deployment variants</h2>
+        <h3>Variant 1. Manual integration from GitHub</h3>
         <p>
-            To configure deployment of this site to Azure App Service as a web app
-            (assuming a resource group and a service plan exist):
+            Set yours values for the next variables in the
+            <a href="deployment/github.ps1"><span class="code">deployment/github.ps1</span></a>
+            script:
         </p>
-        <pre>
-            az webapp create --name MinimumMinimorum --plan "/subscriptions/0efe8e0b-fdce-4064-a660-008339591626/resourceGroups/SwallowTheDictionary-rg/providers/Microsoft.Web/serverfarms/SwallowTheDictionary-plan" --resource-group "SwallowTheDictionary-rg" --deployment-source-url https://github.com/vasily-blinkov/minimum-minimorum
-        </pre>
+        <ol>
+            <li><span class="code">$SubID</span> &ndash; subscription I.D.;</li>
+            <li><span class="code">$ResGrpNomini</span> &ndash; resource group name;</li>
+            <li><span class="code">$AppSvcPlanNomini</span> &ndash; App Service plan name;</li>
+        </ol>
         <p>
-            And now, change the content, push changes to GIT and publish them:
+            You may also want to change another variables
+            (<span class="code">$WebAppNomini</span> and <span class="code">$GHRepoURL</span>)
+            but script should work without it smoothly.
         </p>
-        <pre>
+        <p>
+            Run the
+            <a href="deployment/github.ps1"><span class="code">deployment/github.ps1</span></a>
+            script.
+            It will create the the app, configure deployment from GitHub with manual integration.
+            Azure CLI must be installed locally in order to use the script.
+        </p>
+        <h3>Variant 2. Using local repository</h3>
+        <p>
+            This variant will be useful if you need to perform build operations and publish consequent artifacts from your local machine.
             TODO
-        </pre>
+        </p>
     </body>
 </html>
