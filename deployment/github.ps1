@@ -75,7 +75,7 @@ function deploy-webapp {
         write-host '- Yes, I should.'
         az webapp create `
          --name "$WebAppName" `
-         --plan "/subscriptions/$SubscriptionID/resourceGroups/$ResourceGroupName/providers/Microsoft.Web/serverfarms/$AppServicePlanName" `
+         --plan "$AppServicePlanName" `
          --resource-group "$ResourceGroupName" `
          --deployment-source-url "$GitHubRepositoryURL"
     }
