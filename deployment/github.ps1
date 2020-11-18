@@ -38,10 +38,16 @@ function validate-params {
     }
 
     # validate githubrepositoryurl
-    write-host 'todo'
+    if ((invoke-webrequest $GitHubRepositoryURL -SkipHttpErrorCheck).StatusCode -NE 200) {
+        write-error "There is a problem accessing the repository at '$GitHubRepositoryURL'"
+        $valid=$false
+    }
 
     # validate appserviceplanname
-    write-host 'todo'
+    if ((az appservice plan list --query "[?name=='$AppServicePlanName'].id" | convertfrom-json | measure).Count -EQ 0) {
+        write-error "There is no an App Service plan with name '$AppServicePlanName'"
+        $valid=$false
+    }
 
     return $valid
 }
