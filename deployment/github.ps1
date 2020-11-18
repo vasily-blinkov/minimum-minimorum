@@ -62,7 +62,7 @@ function deploy-webapp {
     )
 
     write-host '- Should I create a web app?'
-    If ((az webapp list --query "[?name=='MinimumMinimorum'].name" | convertfrom-json | measure).Count -EQ 1) {
+    If ((az webapp list --query "[?name=='$WebAppName'].name" | convertfrom-json | measure).Count -EQ 0) {
         write-host '- Yes, I should.'
         az webapp create `
          --name "$WebAppName" `
