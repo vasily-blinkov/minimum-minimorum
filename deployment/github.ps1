@@ -1,9 +1,8 @@
-$SubID = "0efe8e0b-fdce-4064-a660-008339591626"
-$ResGrpNomini = "SwallowTheDictionary-rg"
-$AppSvcPlanNomini = "SwallowTheDictionary-plan"
-
-$WebAppNomini = "MinimumMinimorum"
-$GHRepoURL = "https://github.com/vasily-blinkov/minimum-minimorum"
+$SubID = "todo get form json"
+$ResGrpNomini = "todo get form json"
+$AppSvcPlanNomini = "todo get form json"
+$WebAppNomini = "todo get form json"
+$GHRepoURL = "todo get form json"
 
 function validate-params {
     param(
