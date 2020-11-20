@@ -1,3 +1,5 @@
+. "$PSScriptRoot\common\validator.ps1"
+
 $parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 
 function validate-params {
@@ -20,17 +22,8 @@ function validate-params {
 
     $valid=$true
 
-    # validate resourcegroupname
-    if ((az group list --query "[?name=='$ResourceGroupName']" | convertfrom-json  | measure).Count -EQ 0) {
-        write-error "There is no a resource group named '$ResourceGroupName' found"
-        $valid=$false
-    }
-
-    # validate subscriptionid
-    if ((az account list --query "[?id=='$SubscriptionID'].name" | convertfrom-json | measure).Count -EQ 0) {
-        write-error "There is no a subscription with id '$SubscriptionID' found"
-        $valid=$false
-    }
+    $valid=$valid -and (validate-parameterresourcegroupname $ResourceGroupName)
+    $valid=$valid -and (validate-parametersubscriptionid $SubscriptionID)
 
     # validate githubrepositoryurl
     if ((invoke-webrequest $GitHubRepositoryURL -SkipHttpErrorCheck).StatusCode -NE 200) {
