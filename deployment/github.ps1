@@ -1,4 +1,4 @@
-$parameters=get-content ".\parameters.json" | convertfrom-json
+$parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 
 function validate-params {
     param(
@@ -78,7 +78,7 @@ function deploy-webapp {
         write-host '- No, I needn''t.'
     }
     
-    write-host '- Now I''m performing a synchronization.'
+    write-host '- Now I''m performing synchronization.'
     az webapp deployment source sync `
      --name "$WebAppName" `
      --resource-group "$ResourceGroupName"
