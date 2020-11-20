@@ -1,8 +1,4 @@
-$SubID = "todo get form json"
-$ResGrpNomini = "todo get form json"
-$AppSvcPlanNomini = "todo get form json"
-$WebAppNomini = "todo get form json"
-$GHRepoURL = "todo get form json"
+$parameters=get-content ".\parameters.json" | convertfrom-json
 
 function validate-params {
     param(
@@ -90,19 +86,19 @@ function deploy-webapp {
 }
 
 $valid=validate-params `
- -SubscriptionID $SubID `
- -ResourceGroupName $ResGrpNomini `
- -AppServicePlanName $AppSvcPlanNomini `
- -WebAppName $WebAppNomini `
- -GitHubRepositoryURL $GHRepoURL
+ -SubscriptionID $parameters.subscription `
+ -ResourceGroupName $parameters.resourceGroup `
+ -AppServicePlanName $parameters.appservicePlan `
+ -WebAppName $parameters.webapp `
+ -GitHubRepositoryURL $parameters.githubRepo
 
 if (! $valid) {
     return
 }
 
 deploy-webapp `
- -SubscriptionID $SubID `
- -ResourceGroupName $ResGrpNomini `
- -AppServicePlanName $AppSvcPlanNomini `
- -WebAppName $WebAppNomini `
- -GitHubRepositoryURL $GHRepoURL
+ -SubscriptionID $parameters.subscription `
+ -ResourceGroupName $parameters.resourceGroup `
+ -AppServicePlanName $parameters.appservicePlan `
+ -WebAppName $parameters.webapp `
+ -GitHubRepositoryURL $parameters.githubRepo

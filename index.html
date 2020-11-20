@@ -22,22 +22,24 @@
         <h2>Azure CLI deployment variants</h2>
         <p>
             If you aren't logged into your Azure account with Azure CLI, do it first:
-            <span class="code">az login</span>.
+            <span class="code">az login</span>. Then clone the
+            <a href="https://github.com/vasily-blinkov/minimum-minimorum"><span class="code">!gh vasily-blinkov/minimum-minimorum</span></a>
+            repository.
         </p>
         <h3>Variant 1. Manual integration from GitHub</h3>
         <p>
-            Set yours values for the next variables in the
-            <a href="deployment/github.ps1"><span class="code">deployment/github.ps1</span></a>
+            Set yours values for the next fields in the
+            <a href="deployment/parameters.json"><span class="code">deployment/parameters.json</span></a>
             script:
         </p>
         <ol>
-            <li><span class="code">$SubID</span> &ndash; subscription I.D.;</li>
-            <li><span class="code">$ResGrpNomini</span> &ndash; resource group name;</li>
-            <li><span class="code">$AppSvcPlanNomini</span> &ndash; App Service plan name;</li>
-            <li><span class="code">$WebAppNomini</span> &ndash; unique web app name</li>
+            <li><span class="code">subscription</span> &ndash; subscription I.D.;</li>
+            <li><span class="code">resourceGroup</span> &ndash; resource group name;</li>
+            <li><span class="code">appservicePlan</span> &ndash; App Service plan name;</li>
+            <li><span class="code">webapp</span> &ndash; unique web app name</li>
         </ol>
         <p>
-            You may also want to set another value for the <span class="code">$GHRepoURL</span>
+            You may also want to set another value for the <span class="code">githubRepo</span>
             variable to deploy your web app instead of mine (but I don't mind if you use mine).
         </p>
         <p>
