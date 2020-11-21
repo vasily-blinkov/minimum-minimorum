@@ -27,3 +27,18 @@ function validate-parametersubscriptionid() {
         return $true
     }
 }
+
+function validate-parametergithubrepourl() {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    if ((invoke-webrequest $GitHubRepositoryURL -SkipHttpErrorCheck).StatusCode -NE 200) {
+        write-error "Repository at '$GitHubRepositoryURL' doesn't exist"
+        return $false
+    }
+    else {
+        return $true
+    }
+}

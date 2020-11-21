@@ -24,12 +24,7 @@ function validate-params {
 
     $valid=$valid -and (validate-parameterresourcegroupname $ResourceGroupName)
     $valid=$valid -and (validate-parametersubscriptionid $SubscriptionID)
-
-    # validate githubrepositoryurl
-    if ((invoke-webrequest $GitHubRepositoryURL -SkipHttpErrorCheck).StatusCode -NE 200) {
-        write-error "There is a problem accessing the repository at '$GitHubRepositoryURL'"
-        $valid=$false
-    }
+    $valid=$valid -and (validate-parametergithubrepourl $GitHubRepositoryURL)
 
     # validate appserviceplanname
     if ((az appservice plan list --query "[?name=='$AppServicePlanName'].id" | convertfrom-json | measure).Count -EQ 0) {
