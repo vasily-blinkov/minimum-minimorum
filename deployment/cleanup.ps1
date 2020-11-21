@@ -5,10 +5,7 @@ $parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 function validate-params() {
     param(
         [parameter(mandatory=$true)]
-        [string]$ResourceGroupName,
-
-        [parameter(mandatory=$true)]
-        [string]$WebAppName
+        [string]$ResourceGroupName
     )
 
     $valid=$true
@@ -19,15 +16,24 @@ function validate-params() {
 }
 
 function cleanup-webapp() {
-    write-host "az webapp delete --name $todo --resource-group $todo"
+    param(
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$WebAppName
+    )
+
+    az webapp delete --name $WebAppName --resource-group $ResourceGroupName
 }
 
 $valid=validate-params `
- -ResourceGroupName $parameters.resourceGroup `
- -WebAppName $parameters.webapp
+ -ResourceGroupName $parameters.resourceGroup
 
 if (! $valid) {
     return
 }
 
-cleanup-webapp
+cleanup-webapp `
+ -ResourceGroupName $parameters.resourceGroup `
+ -WebAppName $parameters.webapp
