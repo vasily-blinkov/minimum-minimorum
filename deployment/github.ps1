@@ -27,6 +27,94 @@ function validate-params {
     return $valid
 }
 
+function create-webapp() {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$AppServicePlanName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    az webapp create `
+        --name "$WebAppName" `
+        --plan "$AppServicePlanName" `
+        --resource-group "$ResourceGroupName" `
+        --deployment-source-url "$GitHubRepositoryURL"
+}
+
+function compare-repourl() {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    $RepoURL=(az webapp deployment source show `
+     --name $WebAppName `
+     --resource-group $ResourceGroupName `
+     --subscription $SubscriptionID `
+     --output json `
+     --query "{repoUrl: repoUrl}" `
+    | convertfrom-json).repoUrl
+
+    return $RepoURL -EQ $GitHubRepositoryURL
+}
+
+function update-repourl() {
+    write-host "todo update repoUrl (az webapp deployment source)"
+}
+
+function update-webapp() {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    write-host '- Was repository changed since the previous deployment?'
+    $RepoURLActual=compare-repourl `
+     -WebAppName $WebAppName `
+     -ResourceGroupName $ResourceGroupName `
+     -SubscriptionID $SubscriptionID `
+     -GitHubRepositoryURL $GitHubRepositoryURL
+    
+    if (! $RepoURLActual) {
+        write-host '- Yes, therefore I should update the deployment configuration.'
+        update-repourl
+    }
+    else {
+        write-host '- No, no need to update the deployment configuration.'
+    }
+
+    write-host '- Now I''m performing synchronization.'
+    az webapp deployment source sync `
+     --name "$WebAppName" `
+     --resource-group "$ResourceGroupName"
+}
+
 function deploy-webapp {
     param(
         [parameter(mandatory=$true)]
@@ -46,22 +134,24 @@ function deploy-webapp {
     )
 
     write-host '- Should I create a web app?'
-    If ((az webapp list --query "[?name=='$WebAppName'].name" | convertfrom-json | measure).Count -EQ 0) {
+    if ((az webapp list --query "[?name=='$WebAppName'].name" | convertfrom-json | measure).Count -EQ 0) {
         write-host '- Yes, I should.'
-        az webapp create `
-         --name "$WebAppName" `
-         --plan "$AppServicePlanName" `
-         --resource-group "$ResourceGroupName" `
-         --deployment-source-url "$GitHubRepositoryURL"
+        create-webapp `
+         -WebAppName $WebAppName `
+         -AppServicePlanName $AppServicePlanName `
+         -ResourceGroupName $ResourceGroupName `
+         -GitHubRepositoryURL $GitHubRepositoryURL
     }
-    Else {
+    else {
         write-host '- No, I needn''t.'
     }
     
-    write-host '- Now I''m performing synchronization.'
-    az webapp deployment source sync `
-     --name "$WebAppName" `
-     --resource-group "$ResourceGroupName"
+    update-webapp `
+     -WebAppName $WebAppName `
+     -ResourceGroupName $ResourceGroupName `
+     -SubscriptionID $SubscriptionID `
+     -GitHubRepositoryURL $GitHubRepositoryURL
+
     write-host '- I''m finished.'
 }
 

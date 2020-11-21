@@ -1,3 +1,5 @@
+. "$PSScriptRoot\ping.ps1"
+
 function validate-parameterresourcegroupname() {
     param(
         [parameter(mandatory=$true)]
@@ -34,7 +36,7 @@ function validate-parametergithubrepourl() {
         [string]$GitHubRepositoryURL
     )
 
-    if ((invoke-webrequest $GitHubRepositoryURL -SkipHttpErrorCheck).StatusCode -NE 200) {
+    if (! (ping-uri $GitHubRepositoryURL)) {
         write-error "Repository at '$GitHubRepositoryURL' doesn't exist"
         return $false
     }
