@@ -25,12 +25,7 @@ function validate-params {
     $valid=$valid -and (validate-parameterresourcegroupname $ResourceGroupName)
     $valid=$valid -and (validate-parametersubscriptionid $SubscriptionID)
     $valid=$valid -and (validate-parametergithubrepourl $GitHubRepositoryURL)
-
-    # validate appserviceplanname
-    if ((az appservice plan list --query "[?name=='$AppServicePlanName'].id" | convertfrom-json | measure).Count -EQ 0) {
-        write-error "There is no an App Service plan with name '$AppServicePlanName'"
-        $valid=$false
-    }
+    $valid=$valid -and (validate-parameterappservice $AppServicePlanName)
 
     return $valid
 }

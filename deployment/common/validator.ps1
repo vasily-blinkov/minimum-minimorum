@@ -42,3 +42,18 @@ function validate-parametergithubrepourl() {
         return $true
     }
 }
+
+function validate-parameterappservice() {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$AppServicePlanName
+    )
+
+    if ((az appservice plan list --query "[?name=='$AppServicePlanName'].id" | convertfrom-json | measure).Count -EQ 0) {
+        write-error "There is no an AppService plan called '$AppServicePlanName' in your subscription"
+        return $false
+    }
+    else {
+        return $true
+    }
+}
