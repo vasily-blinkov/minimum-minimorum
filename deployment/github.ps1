@@ -14,9 +14,6 @@ function validate-params {
         [string]$AppServicePlanName,
 
         [parameter(mandatory=$true)]
-        [string]$WebAppName,
-
-        [parameter(mandatory=$true)]
         [string]$GitHubRepositoryURL
     )
 
@@ -72,7 +69,6 @@ $valid=validate-params `
  -SubscriptionID $parameters.subscription `
  -ResourceGroupName $parameters.resourceGroup `
  -AppServicePlanName $parameters.appservicePlan `
- -WebAppName $parameters.webapp `
  -GitHubRepositoryURL $parameters.githubRepo
 
 if (! $valid) {
