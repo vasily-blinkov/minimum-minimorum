@@ -76,7 +76,25 @@ function compare-repourl {
 }
 
 function update-repourl {
-    write-host "todo update repoUrl (az webapp deployment source)"
+    param(
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID,
+
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    az webapp deployment source config `
+        --subscription "$SubscriptionID" `
+        --name "$WebAppName" `
+        --resource-group "$ResourceGroupName" `
+        --repo-url "$GitHubRepositoryURL"
 }
 
 function update-webapp {
@@ -103,7 +121,11 @@ function update-webapp {
     
     if (! $RepoURLActual) {
         write-host '- Yes, therefore I should update the deployment configuration.'
-        update-repourl
+        update-repourl `
+         -SubscriptionID $SubscriptionID `
+         -WebAppName $WebAppName `
+         -ResourceGroupName $ResourceGroupName `
+         -GitHubRepositoryURL $GitHubRepositoryURL
     }
     else {
         write-host '- No, no need to update the deployment configuration.'
