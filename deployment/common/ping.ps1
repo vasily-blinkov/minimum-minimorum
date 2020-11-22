@@ -4,5 +4,14 @@ function ping-uri {
         [string]$URI
     )
 
-    return (invoke-webrequest $URI -SkipHttpErrorCheck).StatusCode -EQ 200
+    $Status=200
+
+    try {
+        $Status=(invoke-webrequest $URI -SkipHttpErrorCheck).StatusCode
+    }
+    catch {
+        $Status=404
+    }
+
+    return $Status -EQ 200
 }

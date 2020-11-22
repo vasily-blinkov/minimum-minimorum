@@ -42,11 +42,19 @@ function create-webapp {
         [string]$GitHubRepositoryURL
     )
 
+    $Target="$($WebAppName.ToLower()).azurewebsites.net"
+    if (ping-uri $Target) {
+        write-error "The name '$Target' is already taken by another developer; change the webapp name."
+        return $false
+    }
+
     az webapp create `
         --name "$WebAppName" `
         --plan "$AppServicePlanName" `
         --resource-group "$ResourceGroupName" `
         --deployment-source-url "$GitHubRepositoryURL"
+
+    return $true
 }
 
 function compare-repourl {
@@ -155,10 +163,11 @@ function deploy-webapp {
         [string]$GitHubRepositoryURL
     )
 
+    $Updatable=$true
     write-host '- Should I create a web app?'
     if ((az webapp list --query "[?name=='$WebAppName'].name" | convertfrom-json | measure).Count -EQ 0) {
         write-host '- Yes, I should.'
-        create-webapp `
+        $Updatable=create-webapp `
          -WebAppName $WebAppName `
          -AppServicePlanName $AppServicePlanName `
          -ResourceGroupName $ResourceGroupName `
@@ -168,11 +177,13 @@ function deploy-webapp {
         write-host '- No, I needn''t.'
     }
     
-    update-webapp `
-     -WebAppName $WebAppName `
-     -ResourceGroupName $ResourceGroupName `
-     -SubscriptionID $SubscriptionID `
-     -GitHubRepositoryURL $GitHubRepositoryURL
+    if ($Updatable) {
+        update-webapp `
+        -WebAppName $WebAppName `
+        -ResourceGroupName $ResourceGroupName `
+        -SubscriptionID $SubscriptionID `
+        -GitHubRepositoryURL $GitHubRepositoryURL
+    }
 
     write-host '- I''m finished.'
 }
