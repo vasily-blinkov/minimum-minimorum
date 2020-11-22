@@ -2,7 +2,7 @@
 
 $parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 
-function validate-params() {
+function validate-params {
     param(
         [parameter(mandatory=$true)]
         [string]$ResourceGroupName
@@ -15,7 +15,7 @@ function validate-params() {
     return $valid
 }
 
-function cleanup-webapp() {
+function cleanup-webapp {
     param(
         [parameter(mandatory=$true)]
         [string]$ResourceGroupName,

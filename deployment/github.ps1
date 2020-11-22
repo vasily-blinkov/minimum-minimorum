@@ -27,7 +27,7 @@ function validate-params {
     return $valid
 }
 
-function create-webapp() {
+function create-webapp {
     param(
         [parameter(mandatory=$true)]
         [string]$WebAppName,
@@ -49,7 +49,7 @@ function create-webapp() {
         --deployment-source-url "$GitHubRepositoryURL"
 }
 
-function compare-repourl() {
+function compare-repourl {
     param(
         [parameter(mandatory=$true)]
         [string]$WebAppName,
@@ -75,11 +75,11 @@ function compare-repourl() {
     return $RepoURL -EQ $GitHubRepositoryURL
 }
 
-function update-repourl() {
+function update-repourl {
     write-host "todo update repoUrl (az webapp deployment source)"
 }
 
-function update-webapp() {
+function update-webapp {
     param(
         [parameter(mandatory=$true)]
         [string]$WebAppName,

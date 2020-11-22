@@ -1,6 +1,6 @@
 . "$PSScriptRoot\ping.ps1"
 
-function validate-parameterresourcegroupname() {
+function validate-parameterresourcegroupname {
     param(
         [parameter(mandatory=$true)]
         [string]$ResourceGroupName
@@ -15,7 +15,7 @@ function validate-parameterresourcegroupname() {
     }
 }
 
-function validate-parametersubscriptionid() {
+function validate-parametersubscriptionid {
     param(
         [parameter(mandatory=$true)]
         [string]$SubscriptionID
@@ -30,7 +30,7 @@ function validate-parametersubscriptionid() {
     }
 }
 
-function validate-parametergithubrepourl() {
+function validate-parametergithubrepourl {
     param(
         [parameter(mandatory=$true)]
         [string]$GitHubRepositoryURL
@@ -45,7 +45,7 @@ function validate-parametergithubrepourl() {
     }
 }
 
-function validate-parameterappservice() {
+function validate-parameterappservice {
     param(
         [parameter(mandatory=$true)]
         [string]$AppServicePlanName

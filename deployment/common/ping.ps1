@@ -1,4 +1,4 @@
-function ping-uri() {
+function ping-uri {
     param(
         [parameter(mandatory=$true)]
         [string]$URI
