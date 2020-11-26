@@ -49,10 +49,10 @@ function create-webapp {
     }
 
     az webapp create `
-        --name "$WebAppName" `
-        --plan "$AppServicePlanName" `
-        --resource-group "$ResourceGroupName" `
-        --deployment-source-url "$GitHubRepositoryURL"
+     --name "$WebAppName" `
+     --plan "$AppServicePlanName" `
+     --resource-group "$ResourceGroupName" `
+     --deployment-source-url "$GitHubRepositoryURL"
 
     return $true
 }
@@ -99,22 +99,22 @@ function update-repourl {
     )
 
     az webapp deployment source config `
-        --subscription "$SubscriptionID" `
-        --name "$WebAppName" `
-        --resource-group "$ResourceGroupName" `
-        --repo-url "$GitHubRepositoryURL"
+     --subscription "$SubscriptionID" `
+     --name "$WebAppName" `
+     --resource-group "$ResourceGroupName" `
+     --repo-url "$GitHubRepositoryURL"
 }
 
-function update-webapp {
+function workout-repourl {
     param(
         [parameter(mandatory=$true)]
-        [string]$WebAppName,
+        [string]$SubscriptionID,
 
         [parameter(mandatory=$true)]
         [string]$ResourceGroupName,
 
         [parameter(mandatory=$true)]
-        [string]$SubscriptionID,
+        [string]$WebAppName,
 
         [parameter(mandatory=$true)]
         [string]$GitHubRepositoryURL
@@ -138,6 +138,28 @@ function update-webapp {
     else {
         write-host '- No, no need to update the deployment configuration.'
     }
+}
+
+function update-webapp {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL
+    )
+
+    workout-repourl `
+     -SubscriptionID $SubscriptionID `
+     -WebAppName $WebAppName `
+     -ResourceGroupName $ResourceGroupName `
+     -GitHubRepositoryURL $GitHubRepositoryURL
 
     write-host '- Now I''m performing synchronization.'
     az webapp deployment source sync `
@@ -179,10 +201,10 @@ function deploy-webapp {
     
     if ($Updatable) {
         update-webapp `
-        -WebAppName $WebAppName `
-        -ResourceGroupName $ResourceGroupName `
-        -SubscriptionID $SubscriptionID `
-        -GitHubRepositoryURL $GitHubRepositoryURL
+         -WebAppName $WebAppName `
+         -ResourceGroupName $ResourceGroupName `
+         -SubscriptionID $SubscriptionID `
+         -GitHubRepositoryURL $GitHubRepositoryURL
     }
 
     write-host '- I''m finished.'
