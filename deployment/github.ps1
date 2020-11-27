@@ -39,7 +39,10 @@ function create-webapp {
         [string]$ResourceGroupName,
 
         [parameter(mandatory=$true)]
-        [string]$GitHubRepositoryURL
+        [string]$GitHubRepositoryURL,
+
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID
     )
 
     $Target="$($WebAppName.ToLower()).azurewebsites.net"
@@ -48,10 +51,19 @@ function create-webapp {
         return $false
     }
 
+    write-host '- Creating a web app.'
     az webapp create `
      --name "$WebAppName" `
      --plan "$AppServicePlanName" `
+     --resource-group "$ResourceGroupName"
+
+    write-host '- Setting up the deployment config.'
+    az webapp deployment source config `
+     --subscription "$SubscriptionID" `
+     --name "$WebAppName" `
      --resource-group "$ResourceGroupName" `
+     --manual-integration `
+     --app-working-dir "public" `
      --deployment-source-url "$GitHubRepositoryURL"
 
     return $true
@@ -128,7 +140,7 @@ function workout-repourl {
      -GitHubRepositoryURL $GitHubRepositoryURL
     
     if (! $RepoURLActual) {
-        write-host '- Yes, therefore I should update the deployment configuration.'
+        write-host '- Yes, therefore I should update the repository.'
         update-repourl `
          -SubscriptionID $SubscriptionID `
          -WebAppName $WebAppName `
@@ -136,7 +148,7 @@ function workout-repourl {
          -GitHubRepositoryURL $GitHubRepositoryURL
     }
     else {
-        write-host '- No, no need to update the deployment configuration.'
+        write-host '- No, no need to update the repository.'
     }
 }
 
@@ -193,7 +205,8 @@ function deploy-webapp {
          -WebAppName $WebAppName `
          -AppServicePlanName $AppServicePlanName `
          -ResourceGroupName $ResourceGroupName `
-         -GitHubRepositoryURL $GitHubRepositoryURL
+         -GitHubRepositoryURL $GitHubRepositoryURL `
+         -SubscriptionID $SubscriptionID
     }
     else {
         write-host '- No, I needn''t.'
