@@ -53,6 +53,7 @@ function create-webapp {
 
     write-host '- Creating a web app.'
     az webapp create `
+     --subscription "$SubscriptionID" `
      --name "$WebAppName" `
      --plan "$AppServicePlanName" `
      --resource-group "$ResourceGroupName"
@@ -62,9 +63,7 @@ function create-webapp {
      --subscription "$SubscriptionID" `
      --name "$WebAppName" `
      --resource-group "$ResourceGroupName" `
-     --manual-integration `
-     --app-working-dir "public" `
-     --deployment-source-url "$GitHubRepositoryURL"
+     --repo-url "$GitHubRepositoryURL"
 
     return $true
 }
