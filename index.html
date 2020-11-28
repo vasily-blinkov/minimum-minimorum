@@ -16,17 +16,26 @@
     </head>
     <body>
         <h1>Hello, world!</h1>
+        <h2>Preface</h2>
         <p>
             This is a very minimalistic web project: a static site.
+            It consists of descriptions of two web app deployment methods:
+            manual integration and auto sync to Microsoft Azure AppService
+            with Azure CLI.
         </p>
         <h2>Azure CLI deployment</h2>
+        <h3>Common steps</h3>
+        <h4>Preparation</h4>
+        <p>
+            Azure CLI must be installed locally in order to use the scripts referenced below.
+        </p>
         <p>
             If you aren't logged into your Azure account with Azure CLI, do it first:
             <span class="code">az login</span>. Then clone the
             <a href="https://github.com/vasily-blinkov/minimum-minimorum"><span class="code">!gh vasily-blinkov/minimum-minimorum</span></a>
             repository.
         </p>
-        <h3>Manual integration from GitHub</h3>
+        <h4>Filling parameters</h4>
         <p>
             Set yours values for the next fields in the
             <a href="https://raw.githubusercontent.com/vasily-blinkov/minimum-minimorum/master/deployment/parameters.json"><span class="code">deployment/parameters.json</span></a>
@@ -42,17 +51,17 @@
             You may also want to set another value for the <span class="code">githubRepo</span>
             variable to deploy your web app instead of mine (but I don't mind if you use mine).
         </p>
+        <h3>Manual integration</h3>
         <p>
             Run the
-            <a href="https://raw.githubusercontent.com/vasily-blinkov/minimum-minimorum/master/deployment/github.ps1"><span class="code">deployment/github.ps1</span></a>
+            <a href="https://raw.githubusercontent.com/vasily-blinkov/minimum-minimorum/master/deployment/manual-integration.ps1"><span class="code">manual-integration.ps1</span></a>
             script.
             It will create the the app, configure deployment from GitHub with manual integration.
             This script tells Azure to take the web app sources <em>from GitHub</em>, so you
             should to push any changes to make the web app reflect them.
         </p>
-        <p>
-            Azure CLI must be installed locally in order to use the script.
-        </p>
+        <h3>Auto sync</h3>
+        <p>TODO</p>
         <h2>Cleaning up</h2>
         <p>
             Use the <a href="https://raw.githubusercontent.com/vasily-blinkov/minimum-minimorum/master/deployment/cleanup.ps1"><span class="code">deployment/cleanup.ps1</span></a>
