@@ -58,6 +58,14 @@ function create-webapp {
      --plan "$AppServicePlanName" `
      --resource-group "$ResourceGroupName" `
      --deployment-source-url "$GitHubRepositoryURL"
+    
+    write-host '- Disabling automatic sync.'
+    az webapp deployment source config `
+     --subscription "$SubscriptionID" `
+     --resource-group "$ResourceGroupName" `
+     --name "$WebAppName" `
+     --repo-url "$GitHubRepositoryURL" `
+     --manual-integration
 
     return $true
 }
