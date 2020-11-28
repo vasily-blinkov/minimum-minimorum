@@ -27,6 +27,30 @@ function validate-params {
     return $valid
 }
 
+function configure-deployment {
+    param(
+        [parameter(mandatory=$true)]
+        [string]$WebAppName,
+
+        [parameter(mandatory=$true)]
+        [string]$ResourceGroupName,
+
+        [parameter(mandatory=$true)]
+        [string]$GitHubRepositoryURL,
+
+        [parameter(mandatory=$true)]
+        [string]$SubscriptionID
+    )
+
+    write-host '- Configuring app deployment.'
+    az webapp deployment source config `
+     --subscription "$SubscriptionID" `
+     --resource-group "$ResourceGroupName" `
+     --name "$WebAppName" `
+     --repo-url "$GitHubRepositoryURL" `
+     --manual-integration
+}
+
 function create-webapp {
     param(
         [parameter(mandatory=$true)]
@@ -59,13 +83,11 @@ function create-webapp {
      --resource-group "$ResourceGroupName" `
      --deployment-source-url "$GitHubRepositoryURL"
     
-    write-host '- Disabling automatic sync.'
-    az webapp deployment source config `
-     --subscription "$SubscriptionID" `
-     --resource-group "$ResourceGroupName" `
-     --name "$WebAppName" `
-     --repo-url "$GitHubRepositoryURL" `
-     --manual-integration
+    configure-deployment `
+     -SubscriptionID "$SubscriptionID" `
+     -ResourceGroupName "$ResourceGroupName" `
+     -WebAppName "$WebAppName" `
+     -GitHubRepositoryURL "$GitHubRepositoryURL"
 
     return $true
 }
@@ -96,28 +118,6 @@ function compare-repourl {
     return $RepoURL -EQ $GitHubRepositoryURL
 }
 
-function update-repourl {
-    param(
-        [parameter(mandatory=$true)]
-        [string]$SubscriptionID,
-
-        [parameter(mandatory=$true)]
-        [string]$WebAppName,
-
-        [parameter(mandatory=$true)]
-        [string]$ResourceGroupName,
-
-        [parameter(mandatory=$true)]
-        [string]$GitHubRepositoryURL
-    )
-
-    az webapp deployment source config `
-     --subscription "$SubscriptionID" `
-     --name "$WebAppName" `
-     --resource-group "$ResourceGroupName" `
-     --repo-url "$GitHubRepositoryURL"
-}
-
 function workout-repourl {
     param(
         [parameter(mandatory=$true)]
@@ -142,11 +142,12 @@ function workout-repourl {
     
     if (! $RepoURLActual) {
         write-host '- Yes, therefore I should update the repository.'
-        update-repourl `
-         -SubscriptionID $SubscriptionID `
-         -WebAppName $WebAppName `
-         -ResourceGroupName $ResourceGroupName `
-         -GitHubRepositoryURL $GitHubRepositoryURL
+    
+        configure-deployment `
+         -SubscriptionID "$SubscriptionID" `
+         -ResourceGroupName "$ResourceGroupName" `
+         -WebAppName "$WebAppName" `
+         -GitHubRepositoryURL "$GitHubRepositoryURL"
     }
     else {
         write-host '- No, no need to update the repository.'
