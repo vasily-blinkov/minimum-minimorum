@@ -56,14 +56,8 @@ function create-webapp {
      --subscription "$SubscriptionID" `
      --name "$WebAppName" `
      --plan "$AppServicePlanName" `
-     --resource-group "$ResourceGroupName"
-
-    write-host '- Setting up the deployment config.'
-    az webapp deployment source config `
-     --subscription "$SubscriptionID" `
-     --name "$WebAppName" `
      --resource-group "$ResourceGroupName" `
-     --repo-url "$GitHubRepositoryURL"
+     --deployment-source-url "$GitHubRepositoryURL"
 
     return $true
 }
