@@ -2,7 +2,7 @@
 
 $parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 
-function validate-params {
+function test-params {
     param(
         [parameter(mandatory=$true)]
         [string]$SubscriptionID,
@@ -225,7 +225,7 @@ function deploy-webapp {
     write-host '- I''m finished.'
 }
 
-$valid=validate-params `
+$valid=test-params `
  -SubscriptionID $parameters.subscription `
  -ResourceGroupName $parameters.resourceGroup `
  -AppServicePlanName $parameters.appservicePlan `
