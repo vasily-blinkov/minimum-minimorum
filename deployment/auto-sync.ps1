@@ -15,4 +15,5 @@ az webapp deployment source config `
  --name $parameters.webapp `
  --repo-url $parameters.githubRepo `
  --git-token (read-token -Prompt "GitHub Personal Access Token") `
- --branch master
+ --branch master `
+ --repository-type github
