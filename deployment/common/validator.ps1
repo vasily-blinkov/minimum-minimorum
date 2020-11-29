@@ -1,4 +1,4 @@
-. "$PSScriptRoot\ping.ps1"
+. "$PSScriptRoot\ping-uri.ps1"
 
 function validate-parameterresourcegroupname {
     param(
