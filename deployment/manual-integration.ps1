@@ -1,4 +1,5 @@
 . "$PSScriptRoot\common\validator.ps1"
+. "$PSScriptRoot\common\assert-webapp.ps1"
 
 $parameters=get-content "$PSScriptRoot\parameters.json" | convertfrom-json
 
@@ -201,7 +202,7 @@ function deploy-webapp {
 
     $Updatable=$true
     write-host '- Should I create a web app?'
-    if ((az webapp list --query "[?name=='$WebAppName'].name" | convertfrom-json | measure).Count -EQ 0) {
+    if (! (assert-webapp $WebAppName)) {
         write-host '- Yes, I should.'
         $Updatable=create-webapp `
          -WebAppName $WebAppName `
