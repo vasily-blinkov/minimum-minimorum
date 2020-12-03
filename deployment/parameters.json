@@ -3,5 +3,6 @@
     "resourceGroup": "SwallowTheDictionary-rg",
     "appservicePlan": "SwallowTheDictionary-plan",
     "webapp": "MinimumMinimorum",
-    "githubRepo": "https://github.com/vasily-blinkov/minimum-minimorum"
+    "githubRepo": "https://github.com/vasily-blinkov/minimum-minimorum",
+    "deploymentUsername": "vasily_blinkov/deploy"
 }
