@@ -27,7 +27,7 @@ az webapp deployment source config-local-git `
 
 $GitRemote="https://$($parameters.deploymentUsername)@$($parameters.webapp).scm.azurewebsites.net/$($parameters.webapp).git"
 write-host "- Assert if the '$GitRemote' git remote added"
-if ($false<#TODO: Complete condition#>) {
+if ((git remote | where-object {$_ -eq "origin"} | measure-object).count -ne 1<#todo move the cond to assert-gitremote.ps1#>) {
     write-host "- The '$GitRemote' git remote didn't add. Adding"
     git remote add azure "$GitRemote"
 }
